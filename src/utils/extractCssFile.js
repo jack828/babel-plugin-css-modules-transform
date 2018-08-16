@@ -23,7 +23,7 @@ export default function extractCssFile(cwd, cssMap, extractCss) {
 
         const css = Array.from(cssMap.values()).join('');
 
-        return writeCssFile(extractCss, css);
+        return writeCssFile(extractCss, css, true);
     }
 
     // This is the case where each css file is written in
