@@ -1,16 +1,23 @@
 import mkdirp from 'mkdirp';
 import { dirname } from 'path';
-import { appendFileSync, writeFileSync } from 'fs';
+import { readFileSync, appendFileSync, writeFileSync } from 'fs';
 
 /**
  * Writes css file to given path (and creates directories)
  *
+ * Check existance of CSS string, and compare file contents
+ * length. If the CSS string is larger, override the file.
+ *
  * @param {String} path
  * @param {String} content
- * @param {Boolean} append
  */
-export default function writeCssFile(path, content, append = false) {
+export default function writeCssFile(path, content) {
     mkdirp.sync(dirname(path));
+    const contents = readFileSync(path, 'utf8');
+    let append = true;
+    if (contents && content.length > contents.length) {
+        append = false;
+    }
 
     if (append) {
         appendFileSync(path, content);
