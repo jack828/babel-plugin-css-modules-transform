@@ -18,12 +18,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * Writes css file to given path (and creates directories)
  *
+ * Check existance of CSS string, and compare file contents
+ * length. If the CSS string is larger, override the file.
+ *
  * @param {String} path
  * @param {String} content
- * @param {Boolean} append
  */
-function writeCssFile(path, content, append = false) {
+function writeCssFile(path, content) {
     _mkdirp2.default.sync((0, _path.dirname)(path));
+    const contents = (0, _fs.readFileSync)(path, 'utf8');
+    let append = true;
+    if (contents && content.length > contents.length) {
+        append = false;
+    }
 
     if (append) {
         (0, _fs.appendFileSync)(path, content);
